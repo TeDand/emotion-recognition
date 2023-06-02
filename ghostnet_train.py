@@ -20,7 +20,7 @@ def main():
     input = torch.randn(32,3,224,224)
     y = model(input)
 
-    model.load_state_dict(torch.load('state_dict_73.98.pth'))
+    model.load_state_dict(torch.load('emotion-recognition/state_dict_73.98.pth'))
     model = torch.nn.DataParallel(model, device_ids = list(range(n_gpu))).cuda()
     model.eval()
 
@@ -32,7 +32,7 @@ def main():
     new_last_layer = nn.Linear(num_features, num_classes).cuda()
     model.module.classifier = new_last_layer
 
-    dataset = create_dataset(name='', root='AffectNetData', transform=loader)
+    dataset = create_dataset(name='', root='emotion-recognition/AffectNetData', transform=loader)
 
     batch_size = 64
 
@@ -81,7 +81,7 @@ def main():
         print("loss=", avg_loss, ", accuracy=", avg_acc)
 
         if epoch % 20 == 0:
-            torch.save(model.state_dict(), f'ghostnet_checkpoints/checkpoint_{epoch}.pth')
+            torch.save(model.state_dict(), f'emotion-recognition/ghostnet_checkpoints/checkpoint_{epoch}.pth')
         
 if __name__ == "__main__":
     main()
